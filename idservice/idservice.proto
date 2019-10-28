@@ -14,6 +14,9 @@
 
 syntax = "proto3";
 
+// https://github.com/grpc-ecosystem/grpc-gateway
+import "google/api/annotations.proto";
+
 option java_multiple_files = true;
 option java_package = "com.github.kyunghoj.idservice";
 option java_outer_classname = "IdServiceProto";
@@ -21,11 +24,20 @@ option java_outer_classname = "IdServiceProto";
 package idservice;
 
 service IdService {
-  // rpc CreateNewID (IdRequest) returns (IdResponse) {}
-  rpc GetUID (IdRequest) returns (IdResponse) {} // Given a User Name, return UID
-  rpc GetGID (IdRequest) returns (IdResponse) {} // Given a Group Name, return GID
-  // rpc GetGIDs (IdRequest) returns (IdResponse) {}
-  // rpc DeleteID (IdRequest) returns (IdResponse) {}
+  // Given a User Name, return UID
+  rpc GetUID (IdRequest) returns (IdResponse) {
+    option (google.api.http) = {
+      post: "/v1/uid"
+      body: "*"
+    };
+  }
+  // Given a Group Name, return GID
+  rpc GetGID (IdRequest) returns (IdResponse) {
+    option (google.api.http) = {
+      post: "/v1/gid"
+      body: "*"
+    };
+  }
 }
 
 // The request message containing the user's name.
