@@ -31,10 +31,16 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	//r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
-	r, err := c.CreateNewID(ctx, &pb.IdRequest{Name: name, AuthToken: "some_random_token_string"})
+
+	r1, err := c.GetUID(ctx, &pb.IdRequest{Query: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Response: %d", r.GetId())
+	log.Printf("Response: %d", r1.GetId())
+
+	r2, err := c.GetGID(ctx, &pb.IdRequest{Query: name})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
+	}
+	log.Printf("Response: %d", r2.GetId())
 }

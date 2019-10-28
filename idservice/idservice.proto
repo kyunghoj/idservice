@@ -21,20 +21,22 @@ option java_outer_classname = "IdServiceProto";
 package idservice;
 
 service IdService {
-  rpc CreateNewID (IdRequest) returns (IdResponse) {}
-  rpc GetID (IdRequest) returns (IdResponse) {}
-  rpc DeleteID (IdRequest) returns (IdResponse) {}
+  // rpc CreateNewID (IdRequest) returns (IdResponse) {}
+  rpc GetUID (IdRequest) returns (IdResponse) {} // Given a User Name, return UID
+  rpc GetGID (IdRequest) returns (IdResponse) {} // Given a Group Name, return GID
+  // rpc GetGIDs (IdRequest) returns (IdResponse) {}
+  // rpc DeleteID (IdRequest) returns (IdResponse) {}
 }
 
 // The request message containing the user's name.
 message IdRequest {
-  string name = 1;
-  string auth_token = 2;
+  string query = 1; // could be username or groupname
+  // string auth_token = 2;
 }
 
 // The response message containing the greetings
 message IdResponse {
   int32 ret_code = 1;
-  uint32 id = 2;
-  string error_msg = 3;
+  int32 id = 2;         // result
+  string error_msg = 3;  // error message, if any
 }
