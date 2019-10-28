@@ -37,7 +37,7 @@ func (s *idServiceServer) GetUID(ctx context.Context, req *pb.IdRequest) (*pb.Id
 		return &pb.IdResponse{RetCode: -1, Id: -1, ErrorMsg: "User not found"}, err
 	}
 	var uid int32
-	i, err := strconv.ParseInt(out.String(), 10, 32)
+	i, err := strconv.ParseInt(strings.TrimSuffix(out.String(), "\n"), 10, 32)
 	if err != nil {
 		log.Fatal(err)
 		return &pb.IdResponse{RetCode: -1, Id: -1, ErrorMsg: "User not found"}, err
@@ -58,7 +58,8 @@ func (s *idServiceServer) GetGID(ctx context.Context, req *pb.IdRequest) (*pb.Id
 		log.Fatal(err)
 		return &pb.IdResponse{RetCode: -1, Id: -1, ErrorMsg: "Group not found"}, err
 	}
-	var res string = strings.Split(out.String(), ":")[2] // "kyungho.jeon:x:1000:kyungho.jeon"
+        // "kyungho.jeon:x:1000:kyungho.jeon"
+	var res string = strings.Split(strings.TrimSuffix(out.String(), "\n"), ":")[2]
 	var gid int32
 	i, err := strconv.ParseInt(res, 10, 32)
 	if err != nil {
